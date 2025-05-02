@@ -15,9 +15,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Install Python dependencies in specific order to avoid conflicts
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir Werkzeug==2.0.1 && \
+    pip install --no-cache-dir Flask==2.0.1 && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . .
